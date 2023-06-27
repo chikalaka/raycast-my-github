@@ -9,8 +9,14 @@ type SectionProps = {
 }
 
 export default function MyPullRequests() {
-  const { myOpenPrs, mentionedPrs, isLoading, prsDetails, prsReviews } =
-    usePrs()
+  const {
+    requestedPrs,
+    myOpenPrs,
+    mentionedPrs,
+    isLoading,
+    prsDetails,
+    prsReviews,
+  } = usePrs()
 
   const Section = ({ title, prs }: SectionProps) => {
     return (
@@ -32,6 +38,7 @@ export default function MyPullRequests() {
   return (
     <List isLoading={isLoading}>
       <Section title={"Opened by me"} prs={myOpenPrs} />
+      <Section title={"Requested"} prs={requestedPrs} />
       <Section title={"Mentioned in"} prs={mentionedPrs} />
       <List.EmptyView title="No pull requests found" />
     </List>

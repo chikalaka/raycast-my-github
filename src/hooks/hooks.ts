@@ -73,10 +73,13 @@ export const usePrQuery = (query: string) => {
 
 export const usePrs = () => {
   const { data: myOpenPrs, isLoading: isMyOpenPrsLoading } = usePrQuery(
-    "is:pr+author:@me+is:open"
+    "type:pr+is:open+author:@me"
   )
   const { data: mentionedPrs, isLoading: isMentionedPrsLoading } = usePrQuery(
-    "is:pr+mentions:@me+is:open" + ""
+    "type:pr+is:open+mentions:@me"
+  )
+  const { data: requestedPrs, isLoading: isRequestedPrsLoading } = usePrQuery(
+    "type:pr+is:open+user-review-requested:@me"
   )
 
   const [prsDetails, setPrsDetails] =
@@ -84,11 +87,19 @@ export const usePrs = () => {
   const [prsReviews, setPrsReviews] =
     useCachedState<Record<string, PullRequestReviews>>(PRS_REVIEWS)
 
-  const myOpenPrsUrls = myOpenPrs?.map((item) => item.url) || []
-  const filteredMentionedPrs = mentionedPrs?.filter(
-    (pr) => !myOpenPrsUrls.includes(pr.url)
+  const urlSet = new Set<string>()
+  mentionedPrs?.forEach((pr) => urlSet.add(pr.url))
+  requestedPrs?.forEach((pr) => urlSet.add(pr.url))
+  myOpenPrs?.forEach((pr) => urlSet.delete(pr.url))
+
+  const filteredRequestedPrs = requestedPrs?.filter((pr) =>
+    urlSet.delete(pr.url)
+  )
+  const filteredMentionedPrs = mentionedPrs?.filter((pr) =>
+    urlSet.delete(pr.url)
   )
 
+  // Drill down details
   useEffect(() => {
     const fetchDrillDownData = (prs: PullRequest[]) => {
       prs.forEach((pr: PullRequest) => {
@@ -133,14 +144,19 @@ export const usePrs = () => {
     if (filteredMentionedPrs) {
       fetchDrillDownData(filteredMentionedPrs)
     }
-  }, [!!myOpenPrs, !!filteredMentionedPrs])
+    if (filteredRequestedPrs) {
+      fetchDrillDownData(filteredRequestedPrs)
+    }
+  }, [!!myOpenPrs, !!filteredMentionedPrs, !!filteredRequestedPrs])
 
   return {
     myOpenPrs,
     mentionedPrs: filteredMentionedPrs,
+    requestedPrs: filteredRequestedPrs,
     prsDetails,
     prsReviews,
-    isLoading: isMyOpenPrsLoading || isMentionedPrsLoading,
+    isLoading:
+      isMyOpenPrsLoading || isMentionedPrsLoading || isRequestedPrsLoading,
   }
 }
 
