@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "my-github",
   "title": "My GitHub",
-  "description": "Commands to list your GitHub pull requests and repositories.",
+  "description": "Commands to list your GitHub pull requests and repositories.\nGet your access token here:\nhttps://github.com/settings/tokens",
   "icon": "github-color-icon.png",
   "author": "chikalaka",
   "categories": [
@@ -13,7 +13,7 @@
     {
       "name": "pull-requests",
       "title": "My Pull Requests",
-      "description": "List pull requests you created, participated in, or were mentioned in.",
+      "description": "List pull requests you created, requested by, or were mentioned in.",
       "mode": "view"
     },
     {
@@ -29,7 +29,7 @@
       "type": "password",
       "required": true,
       "title": "GitHub Token",
-      "description": "Your GitHub's personal access token. Required scopes: notifications repo read:org read:user read:project.",
+      "description": "Your GitHub's personal access token. Required scopes: repo read:user",
       "link": "https://github.com/settings/tokens",
       "placeholder": "Enter your personal access token"
     }

@@ -89,7 +89,7 @@ export default function Item(props: ItemProps) {
       key={props.id}
       title={branchName || repoName}
       subtitle={{ value: repoName, tooltip: props.title }}
-      keywords={[repoName]}
+      keywords={[repoName, ...repoName.split("-")]}
       accessories={accessories}
       icon={getPrIcon(props.draft)}
       actions={
