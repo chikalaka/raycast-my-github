@@ -23,8 +23,16 @@ export default function Repos() {
                     use(repo.id)
                     popToRoot()
                   }}
-                  title="Open in GitHub.com"
+                  title="Open in github.com"
                   url={repo.html_url}
+                />
+                <Action.CopyToClipboard
+                  content={repo.clone_url}
+                  title={"Copy Git Clone"}
+                />
+                <Action.CopyToClipboard
+                  content={repo.ssh_url}
+                  title={"Copy SSH Git Clone"}
                 />
               </ActionPanel>
             }

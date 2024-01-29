@@ -64,6 +64,7 @@ type ItemProps = PullRequest & {
 
 export default function Item(props: ItemProps) {
   const repoName = getRepoName(props.repository_url)
+  // props.reviews[0].submitted_at
   const decisionStates = props.reviews?.map(
     (review) => review.state as DecisionState
   )
@@ -94,10 +95,8 @@ export default function Item(props: ItemProps) {
       icon={getPrIcon(props.draft)}
       actions={
         <ActionPanel>
-          <Action.OpenInBrowser
-            url={props.html_url}
-            onOpen={() => popToRoot()}
-          />
+          <Action.OpenInBrowser url={props.html_url} />
+          <Action.CopyToClipboard content={props.html_url} />
         </ActionPanel>
       }
     />
