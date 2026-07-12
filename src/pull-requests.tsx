@@ -2,13 +2,14 @@ import { List } from "@raycast/api"
 import Item from "./components/Item"
 import { usePrs } from "./hooks/hooks"
 import { PullRequest } from "./types/types"
+import { withGitHub } from "./api/api"
 
 type SectionProps = {
   title: string
   prs?: PullRequest[]
 }
 
-export default function MyPullRequests() {
+function MyPullRequests() {
   const {
     requestedPrs,
     myOpenPrs,
@@ -44,3 +45,5 @@ export default function MyPullRequests() {
     </List>
   )
 }
+
+export default withGitHub(MyPullRequests)

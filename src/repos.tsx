@@ -1,8 +1,9 @@
 import { Action, ActionPanel, List, popToRoot } from "@raycast/api"
 import { useRepos, useUsageBasedSort } from "./hooks/hooks"
 import { Repo } from "./types/types"
+import { withGitHub } from "./api/api"
 
-export default function Repos() {
+function Repos() {
   const { data, isLoading } = useRepos()
   const { data: sortedRepos, use } = useUsageBasedSort<Repo>(
     data || [],
@@ -43,3 +44,5 @@ export default function Repos() {
     </List>
   )
 }
+
+export default withGitHub(Repos)

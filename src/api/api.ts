@@ -1,12 +1,15 @@
 import { Octokit } from "@octokit/rest"
-import { getPreferenceValues } from "@raycast/api"
+import { OAuthService, withAccessToken } from "@raycast/utils"
 
-const { personalAccessToken } = getPreferenceValues()
+export let githubClient: Octokit
 
-const getOctokit = () => {
-  return new Octokit({
-    auth: personalAccessToken,
-  })
+export const github = OAuthService.github({
+  scope: "repo read:user",
+  onAuthorize({ token }) {
+    githubClient = new Octokit({ auth: token })
+  },
+})
+
+export function withGitHub<T>(Component: React.ComponentType<T>) {
+  return withAccessToken<T>(github)(Component)
 }
-
-export const githubClient = getOctokit()
